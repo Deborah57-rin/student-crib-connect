@@ -3,6 +3,8 @@ import { NavLinks } from '../../assets/constants';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthProvider'; // Importing the useAuth hook to access authentication
 import { Building } from 'lucide-react';
+import { FaUserCircle } from "react-icons/fa";
+import { MdLogout } from "react-icons/md";
 
 const Navbar = () => {
   const { user, isLoggedIn , logout} = useAuth();
@@ -96,15 +98,20 @@ const Navbar = () => {
               <div className="p-4 space-y-2">
                 <p className="text-sm text-gray-700">Logged in as:</p>
                 <p className="text-lg font-semibold text-gray-900">{user?.email}</p>
+                
+                <Link className="w-full flex items-center justify-center bg-cyan-600 text-white py-1 rounded-md hover:bg-opacity-80 transition duration-300 hover:text-white" to={`/profile/${user?._id}`}>
+                <FaUserCircle className="mr-2" /> change profile
+                </Link>
+
                 <button
-                  className="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition duration-300"
+                  className="w-full flex justify-start items-center bg-red-500 text-white py-1 rounded-md hover:bg-red-600 transition duration-300"
                   onClick={() => {
                     // Add logout functionality here
                    // console.log('Logout clicked');
                    logout();
                   }}
                 >
-                  Log Out
+                <MdLogout className='text-white mr-2' />  Log Out
                 </button>
               </div>
             </div>

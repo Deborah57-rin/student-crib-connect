@@ -1,14 +1,26 @@
 import React, {useState, useEffect} from "react";
 import { Building, CheckCircle2, Home, Search, Star } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/button/Button";
 import { SearchBar } from "../../components/searchBar/SearchBar";
 import { PropertyGrid } from "../../components/propertyCard/PropertyGrid";
 import { getProperties } from "../../APIs/userAPI";
+import { useAuth } from "../../context/AuthProvider";
 
 const Index = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth(); // Access the user object from context
+  const navigate = useNavigate()
+
+  const handleGetListings = ()=>{
+    if(user){
+      navigate(`/my-properties/${user._id}`)
+    }else{
+      navigate('/login')
+    }
+
+  }
 
   useEffect(()=>{
     const fetchProperties = async () => {
@@ -55,7 +67,7 @@ const Index = () => {
               
               <div className="flex flex-col md:flex-row gap-4 justify-center">
                 <Button title={'Browse Properties'} additionalStyles={'bg-blue-600 text-white hover:bg-opacity-90'}/>
-                <Button title={'List Your Property'} additionalStyles={'bg-blue-400 border-[1px] border-white hover:bg-white hover:text-blue-600 transition duration-300'}/>
+                <Button handleClick={handleGetListings} title={'List Your Property'} additionalStyles={'bg-blue-400 border-[1px] border-white hover:bg-white hover:text-blue-600 transition duration-300'}/>
               </div>
             </div>
           </div>

@@ -174,3 +174,20 @@ exports.searchProperties = async (req, res) => {
   };
 
 
+exports.getUserProperties = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const properties = await Property.find({ ownerId: userId }).populate('ownerId', 'firstName lastName profileUrl phoneNumber email');
+        if(properties.length > 0){
+            res.status(200).json({properties, success: true})
+        }else{
+            res.status(404).json({message:"No properties found", success: false})
+        }
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:"Internal server error", success: false})
+    }
+}
+
+
