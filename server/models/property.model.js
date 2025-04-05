@@ -19,12 +19,18 @@ const PropertySchema = new mongoose.Schema({
     enum: ['furnished', 'unfurnished'],
     required: true 
   },
+  amenities: { 
+    type: [String], 
+    required: false
+  },
   price: { type: Number, required: true },
-  rooms: { type: Number, required: true },
+  bedrooms: { type: Number, required: true },
+  bathrooms: { type: Number, required: true },
   images: { type: [String], default: [] },
   isListed: { type: Boolean, default: false },
   averageRating: { type: Number, default: 0 },
   location: { type: String, required: true },
+  featured: { type: Boolean, default: false },
   likes:{
     type:[mongoose.Schema.Types.ObjectId],
     ref: 'User',

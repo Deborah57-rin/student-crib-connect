@@ -43,7 +43,17 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: false,
         trim: true,
-    }
+    },
+    favorites:{
+        type:[mongoose.Schema.Types.ObjectId],
+        ref: 'Property',
+        required: false,
+    },
+    properties:{
+        type:[mongoose.Schema.Types.ObjectId],
+        ref: 'Property',
+        required: false,
+    },
 }, {timestamps: true});
 
 module.exports = mongoose.model('User', userSchema);
