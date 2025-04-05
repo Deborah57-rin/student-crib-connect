@@ -5,6 +5,7 @@ import {notify } from "../../components/notify/Notify"
 import { loginUser } from '../../APIs/userAPI';
 import { useNavigate } from 'react-router-dom';
 import {Link} from 'react-router-dom'
+import { IoReload } from "react-icons/io5";
 
 
 
@@ -14,11 +15,13 @@ const LoginPage = () => {
   const { login } = useAuth();
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
+  const [loading, setLoading] = useState(false);
  
   const navigate = useNavigate(); // Hook to programmatically navigate
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     // Simulate a successful login (replace with API call later)
    const userData = {
     email,
@@ -49,6 +52,8 @@ const LoginPage = () => {
       }
     } catch (error) {
       console.error('Error during login:', error);
+    }finally{
+      setLoading(false);
     }
    
   };
@@ -92,9 +97,19 @@ const LoginPage = () => {
           {/* Login Button */}
           <button
             type="submit"
-            className="w-full bg-cyan-600 text-white py-2 rounded-md hover:bg-cyan-700 transition duration-300"
+            disabled={loading}
+            className={`w-full bg-cyan-600 text-white py-2 rounded-md hover:bg-cyan-700 transition duration-300 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            Log In
+            {
+              loading ? (
+                <div className="flex items-center justify-center">
+                  <IoReload className="animate-spin mr-2" />
+                  Logging...
+                </div>
+              ) : (
+                'Login'
+              )
+            }
           </button>
         </form>
 

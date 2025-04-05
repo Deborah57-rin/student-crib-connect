@@ -30,17 +30,33 @@ exports.createUser = async (req,res)=>{
 
 exports.updateUser = async (req, res) => {
     try {
-    const userId = req.params.id;
+    const {id} = req.params;
+     // Check if the user exists
+     const user = await User.findById(id);
+     if (!user) {
+       return res.status(404).json({ success: false, message: "User not found" });
+     }
+ 
+ 
+     // If it's a regular field update, update the corresponding fields
+     if (req.body) {
+       for (const key in req.body) {
+         if (key !== "email") {
+           // Ensure email cannot be updated
+           user[key] = req.body[key];
+         }
+       }
+     }
+ 
+     // Save the updated user
+     await user.save();
+ 
+     return res.status(200).json({
+       success: true,
+       message: "updated successfully",
+       user,
+     });
 
-    const user = await User.findById(userId);
-
-      if (user) {
-        user.profileUrl = req.body.profileUrl;
-        await user.save();
-        res.status(200).json({ user, success: true });
-      } else {
-        res.status(404).json({ message: "User not found", success: false });
-      }
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Internal server error", success: false });
@@ -96,3 +112,40 @@ exports.getUserById = async (req, res) => {
         res.status(500).json({ message: "Internal server error", success: false });
     }
 };
+
+
+exports.updateProfile = async (req, res)=>{
+    try {
+        const {id} = req.params
+        const user = await User.findById(id);
+        if(!user){
+            res.status(404).json({
+                success:false,
+                message:"User not found"
+            })
+        }
+
+        if(req.cloudinaryUrls.length > 0){
+            user.profileUrl= req.cloudinaryUrls[0]
+            await user.save();
+
+            res.status(200).json({
+                success:true,
+                user
+            })
+        }
+
+        res.status(404).json({
+            success:false,
+            message:"Profile url found"
+        })
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success:false,
+            message:"Server error"
+        })
+    }
+}
+

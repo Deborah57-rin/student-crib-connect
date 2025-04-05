@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-    baseURL: 'http://localhost:3001/api', // Replace with your API base URL
+    baseURL: 'https://student-crib.vercel.app/api', // Replace with your API base URL
 })
 
 
@@ -77,7 +77,6 @@ export const getPropertyDetials = async (id) => {
 export const searchProperties = async (searchTerms) => {
 
     try {
-        console.log(searchTerms)
         const response = await API.get('/properties/search-items', { params: searchTerms });
         return response.data;
     } catch (error) {
@@ -85,3 +84,40 @@ export const searchProperties = async (searchTerms) => {
         throw error;
     }
 }
+
+
+export const getOwnerProperties = async (userId)=>{
+    try {
+        const res = await API.get(`/properties/user-properties/${userId}`);
+        return res.data;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getUserDetails = async (userId) => {
+    try {
+        const response = await API.get(`/users/${userId}`);
+        return response.data;
+    } catch (error) {   
+        console.error('Error fetching user details:', error);
+        throw error;
+    }
+}
+
+// Function to update user details
+export const updateUserDetails = async (id, data, isFile = false) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": isFile ? "multipart/form-data" : "application/json",
+        },
+      };
+  
+      const response = await API.put(`/users/${id}`, data, config);//axios.put(url, data, config);
+      return response.data;
+    } catch (error) {
+      console.error("Error updating user details:", error);
+      throw error.response?.data || { success: false, message: "An error occurred" };
+    }
+  };

@@ -12,6 +12,7 @@ import LoginPage from './pages/login/LoginPage';
 import PropertyForm from './pages/createProperty/PropertyForm';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import PropertyDetails from './components/propertyCard/PropertyDetails';
+import Listings from './pages/myProperty/Listings';
 
 
 
@@ -30,6 +31,7 @@ function App() {
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/create-property" element={<ProtectedRoute><PropertyForm/></ProtectedRoute>} />
         <Route path="/property-details/:id" element={<PropertyDetails/>} />
+        <Route path="/my-properties/:id" element={<ProtectedRoute><Listings/></ProtectedRoute>} />
       </Routes>
       <Footer/>
     </BrowserRouter>
