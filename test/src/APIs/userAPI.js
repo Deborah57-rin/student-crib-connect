@@ -121,3 +121,23 @@ export const updateUserDetails = async (id, data, isFile = false) => {
       throw error.response?.data || { success: false, message: "An error occurred" };
     }
   };
+
+
+
+export const updateProfilePicture = async (id, files)=>{
+    try{
+        const formData = new FormData();
+
+        formData.append('files', files)
+        const res = await API.put(`/users/profile-image/${id}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+
+        return res.data
+    }catch(error){
+        console.log(error)
+        return error.response.data.message
+    }
+}

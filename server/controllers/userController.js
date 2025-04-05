@@ -149,3 +149,19 @@ exports.updateProfile = async (req, res)=>{
     }
 }
 
+
+exports.getUserDetails = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await User.findById(userId);
+        if (user) {
+            res.status(200).json({ user, success: true });
+        } else {
+            res.status(404).json({ message: "User not found", success: false });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Internal server error", success: false });
+    }
+}
+
